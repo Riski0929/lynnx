@@ -6,7 +6,7 @@ const server = createServer(app);
 const PORT = process.env.PORT || process.env.SERVER_PORT || 3000;
 const packageInfo = require('../package.json');
 
-app.all('/', (req, res) => {
+app.all('/bot', (req, res) => {
 	if (process.send) {
 		process.send('uptime');
 		process.once('message', (uptime) => {
@@ -34,6 +34,10 @@ app.all('/chat', (req, res) => {
 	const { message, to } = req.query;
 	if (!message || !to) return res.status(400).json({ error: 'Missing message or to query' });
 	res.json({ status: 200, mess: 'does not start' })
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 module.exports = { app, server, PORT };
